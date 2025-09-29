@@ -188,7 +188,7 @@ const dagreGraph = new dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
 const nodeWidth = 300;
 const nodeHeight = 150;
 
-const getLayoutedElements = (nodes, edges, direction = 'TB') => {
+const getLayoutedElements = (nodes: any[], edges: any[], direction = 'TB') => {
   const isHorizontal = direction === 'LR';
   dagreGraph.setGraph({ rankdir: direction });
 
@@ -240,10 +240,10 @@ function FlowInterfaceInner({ messages = [], onSendMessage }: FlowInterfaceProps
       return { nodes: layoutedNodes, edges: layoutedEdges };
     }
 
-    const nodes = [];
+    const nodes: any[] = [];
     const edges = [];
     let nodeId = 1;
-    const messageNodeIds = [];
+    const messageNodeIds: string[] = [];
 
     messages.forEach((message, index) => {
       const currentNodeId = nodeId.toString();
@@ -357,7 +357,7 @@ function FlowInterfaceInner({ messages = [], onSendMessage }: FlowInterfaceProps
   }, [messages, generateNodesFromMessages, setNodes, setEdges]);
 
   const onConnect = useCallback(
-    (params) =>
+    (params: Connection) =>
       setEdges((eds) =>
         addEdge({ ...params, type: ConnectionLineType.SmoothStep, animated: true }, eds),
       ),
@@ -365,7 +365,7 @@ function FlowInterfaceInner({ messages = [], onSendMessage }: FlowInterfaceProps
   );
 
   const onLayout = useCallback(
-    (direction) => {
+    (direction: 'TB' | 'LR') => {
       const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
         nodes,
         edges,
