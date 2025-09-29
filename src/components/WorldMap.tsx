@@ -53,7 +53,7 @@ export const WorldMap: React.FC<WorldMapProps> = ({ floats }) => {
           data={mapData}
           backgroundColor='black'
           styleFunction={(context) => ({
-            fill: context.countryValue > 0 ? '#374151' : '#1f2937',
+            fill: context.countryValue! > 0 ? '#374151' : '#1f2937',
             stroke: '#4b5563',
             strokeWidth: 0.5,
             cursor: 'pointer'
