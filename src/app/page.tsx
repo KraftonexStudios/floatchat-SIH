@@ -1,34 +1,28 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { useApp } from "@/contexts/AppContext";
 import { ChatInterface } from "@/components/ChatInterface";
-import FlowInterface from "@/components/FlowInterface";
-import { MapInterface } from "@/components/MapInterface";
 import { CircularNavigation } from "@/components/CircularNavigation";
+
+// Dynamically import FlowInterface with SSR disabled
+const FlowInterface = dynamic(() => import("@/components/FlowInterface"), {
+  ssr: false,
+  loading: () => <div className="flex items-center justify-center h-screen bg-black text-white">Loading Flow Interface...</div>
+});
+
+// Dynamically import MapInterface with SSR disabled
+const MapInterface = dynamic(() => import("@/components/MapInterface").then(mod => ({ default: mod.MapInterface })), {
+  ssr: false,
+  loading: () => <div className="flex items-center justify-center h-screen bg-black text-white">Loading Map Interface...</div>
+});
 
 export default function Home() {
   const { isFlowMode, isMapMode } = useApp();
   const [messages, setMessages] = useState<Array<{ id: string, content: string, isUser: boolean, timestamp: Date }>>([]);
 
-  // Add sample data for testing flow interface
-  const addSampleData = () => {
-    const sampleMessages = [
-      {
-        id: "sample-1",
-        content: "Tell me about ARGO float data in the Arabian Sea",
-        isUser: true,
-        timestamp: new Date(Date.now() - 2000)
-      },
-      {
-        id: "sample-2",
-        content: "Based on ARGO float data analysis, I can provide comprehensive temperature and salinity profiles. The data shows significant seasonal variations in the Arabian Sea during monsoon periods.",
-        isUser: false,
-        timestamp: new Date(Date.now() - 1000)
-      }
-    ];
-    setMessages(sampleMessages);
-  };
+
 
   const handleSendMessage = async (content: string) => {
     const userMessage = {
